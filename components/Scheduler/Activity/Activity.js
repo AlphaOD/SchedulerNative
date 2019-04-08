@@ -13,7 +13,7 @@ import TouchableScale from 'react-native-touchable-scale'; // https://github.com
 import LinearGradient from 'react-native-linear-gradient'; // Only if no expo
 import { ListItem } from 'react-native-elements';
 
-export default activity = (props) => {
+export default activity = (props) => { //list Item stateless component to create an activity for the day component
   return (
     <View style={styles.Elements}>
   <ListItem

@@ -30,13 +30,12 @@ class schedule extends Component {
         <View style={{ flex: 1, alignSelf: 'stretch' }}>
         <Day key={0} day={this.state.picker} />
       </View>
-    );
-    //console.log(this.state);
+    );//sets the day component
     this.setState({ day: dayValue });
-    //console.log(this.state);
+    //sets the day component in state
   };
    handleMenuClick = (index, value) => {
-   // console.log(VAL);
+   // changes day component depending on selected value
       var tValue = (
           <View style={{ flex: 1, alignSelf: 'center', alignContent: "center" }}>
           <Day key={index} day={value} />
@@ -45,7 +44,7 @@ class schedule extends Component {
       this.setState({ day: tValue});
   };
 
-  handlePicker = data => {
+  handlePicker = data => { //Handles the value picked for day value
     this.setState({picker: data});
     if(data==="Today"){
     this.handleMenuClick(1, data);}
@@ -54,9 +53,6 @@ class schedule extends Component {
 
   render() {
 console.log(this.state.picker);
-const data = [
-  { key: index++, section: true, label: 'Today' },
-  { key: index++, label: 'Tomorow' }]
     return (
         <Aux>
             <View style={{flex: 1, alignSelf: 'stretch', paddingBottom: 10,}}>

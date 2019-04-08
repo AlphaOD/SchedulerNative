@@ -29,7 +29,7 @@ class day extends Component {
     results: null, //axios results buffer
     EndDate: null, //Activity validator
     hasError: false, //Error boundaries
-    Drexel: {colors: ['#FFC600', '#006699'], start: [1, 0], end: [0.5, 0],},
+    Drexel: {colors: ['#FFC600', '#006699'], start: [1, 0], end: [0.5, 0],},//colors for Drexel events
     Reg: {colors: ['#006699', '#FFC600'], start: [1, 0], end: [0.2, 0],}
   };
 
@@ -38,9 +38,7 @@ class day extends Component {
     var res = await this.axiosHandler();
     //load the data per hour 
     var final = this.dataLoad(res);
-    console.log(final);
     //set state
-    console.log ("here it is")
     this.setState({ data: final, results: res });
   }
     
@@ -53,18 +51,7 @@ class day extends Component {
       .get("https://my-json-server.typicode.com/amad1101/test/db")
       .then(response => {
         // handle success
-
-        //RegEx for day when new component will be created
-        /* const day = today();
-            const Comp = response.data.bookings;
-            var res = null;
-            for (var x = 0; x < Comp.length; x++) {
-              if (Comp[x].Start.match(/[0-9][0-9][0-9][0-9][-][0-1][0-9][-][0-3][0-9]/i)[0] === day){
-                res.push(Comp[x]);
-              } ;
-              //console.log(x, "=Done=>", Values[x].Start);
-            }*/
-            console.log ("Props: ",this.props.day)
+        console.log ("Props: ",this.props.day)
         var res = response.data;
         if(this.props.day === "Today")
         {return res.today}
