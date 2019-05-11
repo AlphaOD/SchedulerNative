@@ -23,7 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.D.SoccerScheduler"
+    },
+    "android": {
+      "package": "com.D.SoccerScheduler"
     }
   }
 }

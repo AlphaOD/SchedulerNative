@@ -14,6 +14,12 @@ import LinearGradient from 'react-native-linear-gradient'; // Only if no expo
 import { ListItem } from 'react-native-elements';
 
 export default activity = (props) => { //list Item stateless component to create an activity for the day component
+  const formatTime = (t) =>{
+    t = t.split(':');
+    const hours = parseInt(t[0]);
+    var suffix = hours >= 12 ? "PM":"AM"; 
+    return (((hours + 11) % 12 + 1) + ":" + t[1] + suffix); 
+  }
   return (
     <View style={styles.Elements}>
   <ListItem
@@ -27,8 +33,8 @@ export default activity = (props) => { //list Item stateless component to create
   titleStyle={{ color: 'white', fontWeight: 'bold' }}
   subtitleStyle={{ color: 'white' }}
   subtitle="Reserved"
-  rightTitle={props.start}
-  rightSubtitle={props.end}
+  rightTitle={formatTime(props.start)}
+  rightSubtitle={formatTime(props.end)}
   rightTitleStyle={{ color: 'black' }}
   rightSubtitleStyle={{ color: 'black' }}
 />
@@ -39,4 +45,6 @@ export default activity = (props) => { //list Item stateless component to create
 const styles = StyleSheet.create({
     Elements: {
       marginBottom: 5,
-    }})
+    },
+      
+  })

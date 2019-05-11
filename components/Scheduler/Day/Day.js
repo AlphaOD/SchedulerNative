@@ -88,7 +88,6 @@ class day extends Component {
   };
   render() {
    // console.log(this.state);
-    var EndDate = null;
     if (this.state.data !== null){
     const Rows = this.state.data.map((date, id) => {
       //console.log(date);

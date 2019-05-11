@@ -21,14 +21,14 @@ export default class HomeScreen extends React.Component {
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
-            <Image
+            {/*<Image
               source={
                 __DEV__
                   ? require('../assets/images/robot-dev.png')
                   : require('../assets/images/robot-prod.png')
               }
               style={styles.welcomeImage}
-            />
+            />*/}
           </View>
 
           <View style={styles.getStartedContainer} >
@@ -39,6 +39,17 @@ export default class HomeScreen extends React.Component {
             <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
               <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
             </View>*/}
+            <Image 
+              style={{
+                flex: 1,
+                alignSelf: 'center',
+                height: 100,
+                width: 100,
+                borderWidth: 1,
+                borderRadius: 75
+              }}
+              resizeMode="stretch"
+              source={require('../assets/images/Dragons.png')} />
             <Schedule />
           </View>
 
@@ -164,7 +175,7 @@ const styles = StyleSheet.create({
   },
   tabBarInfoText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    color: 'rgba(0,0,0, 1)',
     textAlign: 'center',
   },
   navigationFilename: {

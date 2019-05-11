@@ -1,97 +1,142 @@
-import React, { Component } from "react";
-import Aux from "../hoc/Aux";
-import {
-    Image,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    Picker,
-    View,
-  } from 'react-native';
-import Day from "./Day/Day.js";
-//import ModalPicker from 'react-native-modal-picker'
+  import React, { Component } from "react";
+  import Aux from "../hoc/Aux";
+  import {
+      Image,
+      Platform,
+      ScrollView,
+      StyleSheet,
+      Text,
+      TouchableOpacity,
+      Picker,
+      View,
+      Switch,
+      TouchableHighlight,
+    } from 'react-native';
+  import Day from "./Day/Day.js";
+  //import ModalPicker from 'react-native-modal-picker'
 
-function today(x = 0) {
-  var tempDate = new Date();
-  return (
-    tempDate.getFullYear() +
-    "-" +
-    (tempDate.getMonth() + 1) +
-    "-" +
-    String(Number(tempDate.getDate()) + Number(x))
-  );
-}
-class schedule extends Component {
-  state = { day: null, picker: "Today"};
-  componentDidMount = () => {
-    var dayValue = (
-        <View style={{ flex: 1, alignSelf: 'stretch' }}>
-        <Day key={0} day={this.state.picker} />
-      </View>
-    );//sets the day component
-    this.setState({ day: dayValue });
-    //sets the day component in state
-  };
-   handleMenuClick = (index, value) => {
-   // changes day component depending on selected value
-      var tValue = (
-          <View style={{ flex: 1, alignSelf: 'center', alignContent: "center" }}>
-          <Day key={index} day={value} />
+  class schedule extends Component {
+    state = { day: null, val: "Today"};
+    componentDidMount = () => {
+      
+      var dayValue = (
+          <View style={{ flex: 1, alignSelf: 'stretch' }}>
+          <Day key={0} day="Today" />
         </View>
-      );
-      this.setState({ day: tValue});
-  };
-
-  handlePicker = data => { //Handles the value picked for day value
-    this.setState({picker: data});
-    if(data==="Today"){
-    this.handleMenuClick(1, data);}
-    else if (data==="Tomorrow"){this.handleMenuClick(2, data);}
-  };
-
-  render() {
-console.log(this.state.picker);
-    return (
-        <Aux>
-            <View style={{flex: 1, alignSelf: 'stretch', paddingBottom: 10,}}>
-            <Picker
-            style={{
-              width: 200,
-              height: 80,
-              backgroundColor: '#191919',
-              shadowColor: '#006699',
-              alignSelf: "center",
-              justifyContent: 'center',
-            }}
-            itemStyle={{
-              color: '#FFC600',
-              textShadowColor: '#006699',
-            }}
-        selectedValue={this.state.picker}
-        onValueChange={(itemValue, itemIndex) =>{
-          this.setState({picker: itemValue});
-          this.handleMenuClick(itemIndex, itemValue);
-            }
-        }>
-                <Picker.Item label="Today" value="Today" />
-                <Picker.Item label="Tomorrow" value="Tomorrow" />
-        </Picker>
-        {/*<ModalPicker
-                    data={this.data}
-                    initValue="Select something yummy!"
-                    onChange={
-                    (option) =>{
-                      console.log(option);
-                      this.setState({picker: option.label});
-                      this.handleMenuClick(option.key, option.label);
-                        }} />*/}
+      );//sets the day component
+      this.setState({ day: dayValue });
+      //sets the day component in state
+    };
+     handleMenuClick = (i, v) => {
+     // changes day component depending on selected value
+        var tValue = (
+            <View style={{ flex: 1, alignSelf: 'center', alignContent: "center" }}>
+            <Day key={i} day={v} />
+          </View>
+        );
         
-        </View>
-        <View style={{flex: 1, flexDirection: 'row', alignSelf: 'stretch', paddingTop: 15,}}>{this.state.day}</View>
-        </Aux>
-    );
+        this.setState({ day: tValue});
+    };
+    handlePicker = data => { //Handles the value picked for day value
+      if(data==="Today"){
+        this.setState({val: "Tomorrow"});
+      this.handleMenuClick(1, "Tomorrow");
+      }
+      else if (data==="Tomorrow"){
+        this.handleMenuClick(0, "Today");
+        this.setState({val: "Today"});}
+    };
+    render() {
+      const picker = {
+        ...Platform.select({
+          ios: (
+            <Picker
+              style={{
+                width: 200,
+                height: 80,
+                backgroundColor: '#191919',
+                shadowColor: '#006699',
+                alignSelf: "center",
+                justifyContent: 'center',
+              }}
+              itemStyle={{
+                color: '#FFC600',
+                textShadowColor: '#006699',
+              }}
+          selectedValue={this.state.val}
+          onValueChange={() =>{
+            this.handlePicker(this.state.val);
+              }
+          }>
+                  <Picker.Item label="Today" value="Today" />
+                  <Picker.Item label="Tomorrow" value="Tomorrow" />
+          </Picker>
+          ),
+          android: (
+            <TouchableHighlight
+           style={styles.button}
+           underlayColor = {'#FFC600'}
+           onPress={() =>{
+            this.handlePicker(this.state.val);
+              }}
+          >
+           <Text style={{color: "#FFFFFF"}}> click to pick Day ==> <Text style={{color: "#FFC600"}}>{this.state.val}</Text> </Text>
+          </TouchableHighlight>
+          ),
+        })
+      }
+  
+      console.log(this.state.picker);
+      return (
+          <Aux>
+              <View style={{flexDirection:'row',flex: 1,alignItems: "center", alignSelf: 'center', paddingBottom: 10,}}>
+              {/**/}
+          {/*<Text>Today</Text>
+          <Switch style={{
+                width: 200,
+                height: 80,
+                backgroundColor: '#191919',
+                shadowColor: '#006699',
+                flex: 1,
+                
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              value={this.state.picker}
+              onValueChange={(value) =>{
+                this.setState({picker: value});
+                this.handleMenuClick(value);
+                  }
+              } />*/}
+              {picker}
+          {/*<ModalPicker
+                      data={this.data}
+                      initValue="Select something yummy!"
+                      onChange={
+                      (option) =>{
+                        console.log(option);
+                        this.setState({picker: option.label});
+                        this.handleMenuClick(option.key, option.label);
+                          }} />*/}
+          
+          </View>
+          <View style={{flex: 1, flexDirection: 'row', alignSelf: 'stretch', paddingTop: 15,}}>{this.state.day}</View>
+          </Aux>
+      );
+    }
   }
-}
-export default schedule;
+  export default schedule;
+  
+  const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#006699',
+    shadowColor: '#006699',
+    borderRadius: 10,
+    padding: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    flex: 1,
+    justifyContent: 'center',
+  }})
+  
