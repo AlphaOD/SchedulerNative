@@ -48,11 +48,12 @@ class day extends Component {
     //Axios
     //Get values
     return axios
-      .get("https://my-json-server.typicode.com/amad1101/test/db")
+      .get("https://socceraround.azurewebsites.net")
       .then(response => {
         // handle success
         console.log ("Props: ",this.props.day)
-        var res = response.data;
+        var res = response.data[0].dah;
+        //console.log ("res: ",res)
         if(this.props.day === "Today")
         {return res.today}
         else if(this.props.day === "Tomorrow")
