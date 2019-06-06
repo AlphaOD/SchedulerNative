@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  RefreshControl,
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
@@ -16,10 +17,22 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
 
+  _onRefresh = () => {
+    //this.setState({refreshing: true});
+    //fetchData().then(() => {
+      //this.setState({refreshing: false});
+    //});
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView refreshControl={
+          <RefreshControl
+            //refreshing={this.state.refreshing}
+            //onRefresh={this._onRefresh}
+          />
+        } style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             {/*<Image
               source={
