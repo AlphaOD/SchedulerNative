@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {AsyncStorage} from 'react-native';
 import Aux from "../../hoc/Aux";
 import Activity from "../Activity/Activity";
 
@@ -33,9 +34,47 @@ class day extends Component {
     Reg: {colors: ['#006699', '#FFC600'], start: [1, 0], end: [0.2, 0],}
   };
 
+
+  _storeData = async (val) => {
+    try {
+      await AsyncStorage.setItem('Schedule', JSON.stringify(val));
+    } catch (error) {
+      // Error saving data
+    }
+  };
+
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('Schedule');
+      if (value !== null) {
+        // We have data!!
+        console.log(value);
+      }
+      return value
+    } catch (error) {
+      return null
+    }
+  };
+
   async componentDidMount() {
-    // async for axios and data management
-    var res = await this.axiosHandler();
+
+    stored = this._retrieveData()
+    if (stored !== null) {
+      var today = new Date();
+      if (today == stored[0].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]){
+        // stored if up to date
+        res = stored
+      }
+      else{
+        // async for axios and data management if stored is not up to date
+        var res = await this.axiosHandler();
+      }
+    }
+    else{
+      // async for axios and data management if stored is null
+      var res = await this.axiosHandler();
+    }
+
     //load the data per hour 
     var final = this.dataLoad(res);
     //set state
@@ -48,11 +87,13 @@ class day extends Component {
     //Axios
     //Get values
     return axios
-      .get("https://socceraround.azurewebsites.net")
+      .get("http://soccer.eastus.cloudapp.azure.com:3000/")
       .then(response => {
         // handle success
         console.log ("Props: ",this.props.day)
         var res = response.data[0].dah;
+        this._storeData(res)
+        return res;
         //console.log ("res: ",res)
         if(this.props.day === "Today")
         {return res.today}
