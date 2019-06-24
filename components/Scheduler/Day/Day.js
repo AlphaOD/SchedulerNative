@@ -79,9 +79,7 @@ class day extends Component {
     var final = this.dataLoad(res);
     //set state
     this.setState({ data: final, results: res });
-  }
-    
-
+  };
 
   axiosHandler = () => {
     //Axios
@@ -105,6 +103,7 @@ class day extends Component {
         console.log(error);
       });
   };
+
   dataLoad = (res) => {
     //logic for validation
     const Values = res;
@@ -128,6 +127,7 @@ class day extends Component {
     console.log(dataSource);
     return dataSource;
   };
+  
   render() {
    // console.log(this.state);
     if (this.state.data !== null){
