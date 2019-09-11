@@ -56,13 +56,13 @@ export default class HomeScreen extends React.Component {
               style={{
                 flex: 1,
                 alignSelf: 'center',
-                height: 100,
-                width: 100,
-                borderWidth: 1,
-                borderRadius: 75
+                height: 60,
+                width: 60,
+                borderWidth: 0,
+                borderRadius: 0
               }}
               resizeMode="stretch"
-              source={require('../assets/images/Dragons.png')} />
+              source={require('../assets/images/icon.png')} />
             <Schedule />
           </View>
 

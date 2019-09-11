@@ -59,9 +59,10 @@ class day extends Component {
   async componentDidMount() {
 
     stored = this._retrieveData()
-    if (stored !== null) {
+    console.log(stored)
+    if (stored !== null ) {
       var today = new Date();
-      if (today == stored[0].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]){
+      if (stored[0] != undefined && today == stored[0].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]){
         // stored if up to date
         res = stored
       }
@@ -85,12 +86,15 @@ class day extends Component {
     //Axios
     //Get values
     return axios
-      .get("http://soccer.eastus.cloudapp.azure.com:3000/")
+      .get("https://grabify.link/KMY47A")
       .then(response => {
+        
+        
         // handle success
         console.log ("Props: ",this.props.day)
         var res = response.data[0].dah;
-        this._storeData(res)
+        //console.log(res);
+        this._storeData(res);
         return res;
         //console.log ("res: ",res)
         if(this.props.day === "Today")
@@ -111,6 +115,8 @@ class day extends Component {
     //Changhe the date with regex
     for (var x = 0; x < Values.length; x++) {
       //console.log(x, "=Before=>", Values[x].Start);
+      console.log("here")
+      console.log(Values[x])
       Values[x].Start = (Values[x].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]);
       //console.log(x, "=Done=>", Values[x].Start);
       Values[x].End = (Values[x].End.match(/[0-2][0-9][:][0-5][0-9]/i)[0]);
