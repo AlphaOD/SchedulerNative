@@ -12,6 +12,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    RefreshControl,
   } from 'react-native';
 import aux from "../../hoc/Aux";
 
@@ -31,7 +32,8 @@ class day extends Component {
     EndDate: null, //Activity validator
     hasError: false, //Error boundaries
     Drexel: {colors: ['#FFC600', '#006699'], start: [1, 0], end: [0.5, 0],},//colors for Drexel events
-    Reg: {colors: ['#006699', '#FFC600'], start: [1, 0], end: [0.2, 0],}
+    Reg: {colors: ['#006699', '#FFC600'], start: [1, 0], end: [0.2, 0],},
+    refreshing: false,
   };
 
 
@@ -59,25 +61,29 @@ class day extends Component {
   async componentDidMount() {
 
     stored = this._retrieveData()
-    console.log(stored)
+    
     if (stored !== null ) {
-      var today = new Date();
-      if (stored[0] != undefined && today == stored[0].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]){
+      var day = new Date();
+      if (stored[0] != undefined && day == stored[0].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]){
+        console.log("Cache")
         // stored if up to date
         res = stored
       }
       else{
         // async for axios and data management if stored is not up to date
+        //console.log("reg")
         var res = await this.axiosHandler();
       }
     }
     else{
       // async for axios and data management if stored is null
+      //console.log("reg")
       var res = await this.axiosHandler();
     }
 
     //load the data per hour 
     var final = this.dataLoad(res);
+    
     //set state
     this.setState({ data: final, results: res });
   };
@@ -91,7 +97,7 @@ class day extends Component {
         
         
         // handle success
-        console.log ("Props: ",this.props.day)
+        //console.log ("Props: ",this.props.day)
         var res = response.data[0].dah;
         //console.log(res);
         this._storeData(res);
@@ -104,56 +110,62 @@ class day extends Component {
       })
       .catch(function(error) {
         // handle error
-        console.log(error);
+        //console.log(error);
       });
   };
 
   dataLoad = (res) => {
     //logic for validation
-    const Values = res;
-    var dataSource = []
+    const Values = res[this.state.today];
+    dataSource = [];
+    //console.log(this.state.today);
     //Changhe the date with regex
-    for (var x = 0; x < Values.length; x++) {
-      //console.log(x, "=Before=>", Values[x].Start);
-      console.log("here")
-      console.log(Values[x])
+    for (var x = 0; x < Values.length; x++){
+        // console.log("here")
+        // console.log(Values[x][y])
       Values[x].Start = (Values[x].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]);
       //console.log(x, "=Done=>", Values[x].Start);
       Values[x].End = (Values[x].End.match(/[0-2][0-9][:][0-5][0-9]/i)[0]);
-    }
-    //console.log(Values[0].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]);
-    //SET STATE
-    //console.log("data", dataSource);
-    //fills the activities
-    for (x = 0; x < Values.length; x++) {
-          //console.log(dataSource[i].time);
-          dataSource.push(Values[x]);
-          // console.log(dataSource[i]);
-    }
-    console.log(dataSource);
+
+      dataSource.push(Values[x])
+
+      }
+    //console.log(dataSource);
     return dataSource;
   };
   
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.componentDidMount().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
   render() {
-   // console.log(this.state);
-    if (this.state.data !== null){
-    const Rows = this.state.data.map((date, id) => {
-      //console.log(date);
+   //console.log(this.state.data);
+    if (this.state.data !== undefined){
+      //console.log("here");
+    const Rows = this.state.data.map((data, key) => {
+      //console.log(data.End);
       //Rows of table
       //maping time and activity.stat to end en props du component Activity
       // console.log(EndDate);
       return (
          <Activity
-         key={id}
-              start={date.Start}
-              end={date.End}
-              title={date.Title}
-              sub={date.Location}
+         key={key}
+              start={data.Start}
+              end={data.End}
+              title={data.Title}
+              sub={data.Location}
               type={this.state.Drexel}
             />
       );
     });
-    return <Aux>{Rows}</Aux>
+    return (<ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}/>
+        } >{Rows}</ScrollView>);
     }
     else{
         return (<text>Nothing Scheduled for the current Day </text>);

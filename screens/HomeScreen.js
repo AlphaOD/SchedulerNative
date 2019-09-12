@@ -16,6 +16,7 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+  
 
   _onRefresh = () => {
     //this.setState({refreshing: true});
@@ -26,14 +27,9 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView refreshControl={
-          <RefreshControl
-            //refreshing={this.state.refreshing}
-            //onRefresh={this._onRefresh}
-          />
-        } style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
+      <View style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          {/* <View style={styles.welcomeContainer}>
             {/*<Image
               source={
                 __DEV__
@@ -41,8 +37,8 @@ export default class HomeScreen extends React.Component {
                   : require('../assets/images/robot-prod.png')
               }
               style={styles.welcomeImage}
-            />*/}
-          </View>
+            />
+          </View> */}
 
           <View style={styles.getStartedContainer} >
             {this._maybeRenderDevelopmentModeWarning()}

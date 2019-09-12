@@ -11,17 +11,18 @@
       View,
       Switch,
       TouchableHighlight,
+      RefreshControl,
     } from 'react-native';
   import Day from "./Day/Day.js";
   //import ModalPicker from 'react-native-modal-picker'
 
   class schedule extends Component {
-    state = { day: null, val: "Today"};
+    state = { day: null, val: "today",};
     componentDidMount = () => {
       
       var dayValue = (
           <View style={{ flex: 1, alignSelf: 'stretch' }}>
-          <Day key={0} day="Today" />
+          <Day key={0} day={this.state.val} />
         </View>
       );//sets the day component
       this.setState({ day: dayValue });
@@ -35,17 +36,19 @@
           </View>
         );
         
-        this.setState({ day: tValue});
+        this.setState({day: tValue});
     };
     handlePicker = data => { //Handles the value picked for day value
-      if(data==="Today"){
-        this.setState({val: "Tomorrow"});
-      this.handleMenuClick(1, "Tomorrow");
+      if(data==="today"){
+        this.setState({val: "tomorrow"});
+      this.handleMenuClick(1, "tomorrow");
       }
-      else if (data==="Tomorrow"){
-        this.handleMenuClick(0, "Today");
-        this.setState({val: "Today"});}
+      else if (data==="tomorrow"){
+        this.handleMenuClick(0, "today");
+        this.setState({val: "today"});}
     };
+    
+
     render() {
       const picker = {
         ...Platform.select({
@@ -68,8 +71,8 @@
             this.handlePicker(this.state.val);
               }
           }>
-                  <Picker.Item label="Today" value="Today" />
-                  <Picker.Item label="Tomorrow" value="Tomorrow" />
+                  <Picker.Item label="Today" value="today" />
+                  <Picker.Item label="Tomorrow" value="tomorrow" />
           </Picker>
           ),
           android: (
@@ -86,7 +89,7 @@
         })
       }
   
-      console.log(this.state.picker);
+      //console.log(this.state.picker);
       return (
           <Aux>
               <View style={{flexDirection:'row',flex: 1,alignItems: "center", alignSelf: 'center', paddingBottom: 10,}}>
