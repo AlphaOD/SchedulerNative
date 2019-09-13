@@ -12,6 +12,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Button,
     RefreshControl,
   } from 'react-native';
 import aux from "../../hoc/Aux";
@@ -20,7 +21,28 @@ import aux from "../../hoc/Aux";
 
 //const { Text } = Typography;
 const axios = require("axios");
-var moment = require('moment');
+function wait(ms){
+  var start = new Date().getTime();
+  var end = start;
+  while(end < start + ms) {
+    end = new Date().getTime();
+ }
+}
+const styles = StyleSheet.create({
+  title: {
+    textAlign: 'center',
+    marginVertical: 8,
+  },
+  fixToText: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+});
 
 
 //https://my-json-server.typicode.com/amad1101/test/db
@@ -134,12 +156,13 @@ class day extends Component {
     return dataSource;
   };
   
-  _onRefresh = () => {
+  async _onRefresh() {
     this.setState({refreshing: true});
-    this.componentDidMount().then(() => {
-      this.setState({refreshing: false});
-    });
+    this.forceUpdate();
+    await new Promise(resolve => setTimeout(resolve, 3000)); 
+    this.setState({refreshing: false});
   }
+
   render() {
    //console.log(this.state.data);
     if (this.state.data !== undefined){
@@ -165,7 +188,14 @@ class day extends Component {
         <RefreshControl
           refreshing={this.state.refreshing}
           onRefresh={this._onRefresh}/>
-        } >{Rows}</ScrollView>);
+        } >
+          <View style= {styles.title}>
+            <Button
+            title="Refresh"
+            color='#006699'
+            onPress={() => this._onRefresh()}
+          /></View>
+      {Rows}</ScrollView>);
     }
     else{
         return (<text>Nothing Scheduled for the current Day </text>);

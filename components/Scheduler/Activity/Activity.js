@@ -32,7 +32,7 @@ export default activity = (props) => { //list Item stateless component to create
   title={props.title}
   titleStyle={{ color: 'white', fontWeight: 'bold' }}
   subtitleStyle={{ color: 'white' }}
-  subtitle="Reserved"
+  subtitle={props.sub}
   rightTitle={formatTime(props.start)}
   rightSubtitle={formatTime(props.end)}
   rightTitleStyle={{ color: 'black' }}

@@ -58,7 +58,7 @@ export default class HomeScreen extends React.Component {
                 borderRadius: 0
               }}
               resizeMode="stretch"
-              source={require('../assets/images/icon.png')} />
+              source={require('../assets/images/logo.png')} />
             <Schedule />
           </View>
 
