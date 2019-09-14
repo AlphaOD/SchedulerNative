@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     marginVertical: 8,
+    height: 80
   },
   fixToText: {
     flexDirection: 'row',
@@ -42,6 +43,12 @@ const styles = StyleSheet.create({
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  text: {
+    fontSize: 20,
+    color: 'rgba(96,100,109, 1)',
+    lineHeight: 40,
+    textAlign: 'center',
+  }
 });
 
 
@@ -56,6 +63,7 @@ class day extends Component {
     Drexel: {colors: ['#FFC600', '#006699'], start: [1, 0], end: [0.5, 0],},//colors for Drexel events
     Reg: {colors: ['#006699', '#FFC600'], start: [1, 0], end: [0.2, 0],},
     refreshing: false,
+    Values: null,
   };
 
 
@@ -105,6 +113,8 @@ class day extends Component {
 
     //load the data per hour 
     var final = this.dataLoad(res);
+    console.log(final);
+    
     
     //set state
     this.setState({ data: final, results: res });
@@ -116,15 +126,17 @@ class day extends Component {
     return axios
       .get("https://grabify.link/KMY47A")
       .then(response => {
+       
         
         
         // handle success
         //console.log ("Props: ",this.props.day)
-        var res = response.data[0].dah;
+        var res = response.data;
         //console.log(res);
         this._storeData(res);
+        
         return res;
-        //console.log ("res: ",res)
+        console.log ("res: ",res)
         if(this.props.day === "Today")
         {return res.today}
         else if(this.props.day === "Tomorrow")
@@ -138,7 +150,19 @@ class day extends Component {
 
   dataLoad = (res) => {
     //logic for validation
-    const Values = res[this.state.today];
+    console.log(this.state.today);
+    if (this.state.today=="today"){
+      Values = res.today;
+    }else{
+      Values = res.tomorow;
+    }
+    if(Values==null){
+      this.setState({ Values:null });
+    }else{
+      this.setState({ Values:0 });
+    }
+    
+    console.log(res.tomorow);
     dataSource = [];
     //console.log(this.state.today);
     //Changhe the date with regex
@@ -165,7 +189,7 @@ class day extends Component {
 
   render() {
    //console.log(this.state.data);
-    if (this.state.data !== undefined){
+    if (this.state.Values == 0){
       //console.log("here");
     const Rows = this.state.data.map((data, key) => {
       //console.log(data.End);
@@ -198,7 +222,18 @@ class day extends Component {
       {Rows}</ScrollView>);
     }
     else{
-        return (<text>Nothing Scheduled for the current Day </text>);
+        return (<ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}/>
+            } >
+              <View style= {styles.title}>
+                <Button
+                title="Refresh"
+                color='#006699'
+                onPress={() => this._onRefresh()}
+              /></View><Text style={styles.text}>Nothing Scheduled for the current Day </Text></ScrollView>);
         }
   }
 }
