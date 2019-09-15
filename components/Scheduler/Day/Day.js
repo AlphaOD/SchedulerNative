@@ -80,7 +80,7 @@ class day extends Component {
       const value = await AsyncStorage.getItem('Schedule');
       if (value !== null) {
         // We have data!!
-        console.log(value);
+        //console.log(value);
       }
       return value
     } catch (error) {
@@ -113,7 +113,7 @@ class day extends Component {
 
     //load the data per hour 
     var final = this.dataLoad(res);
-    console.log(final);
+    
     
     
     //set state
@@ -124,23 +124,24 @@ class day extends Component {
     //Axios
     //Get values
     return axios
-      .get("https://grabify.link/KMY47A")
+      .get("https://iplogger.org/2oUcz")
       .then(response => {
        
         
         
         // handle success
         //console.log ("Props: ",this.props.day)
+        console.log(response);
         var res = response.data;
         //console.log(res);
         this._storeData(res);
         
         return res;
-        console.log ("res: ",res)
-        if(this.props.day === "Today")
-        {return res.today}
-        else if(this.props.day === "Tomorrow")
-        {return res.tomorow}
+        // console.log ("res: ",res)
+        // if(this.props.day === "Today")
+        // {return res.today}
+        // else if(this.props.day === "Tomorrow")
+        // {return res.tomorow}
       })
       .catch(function(error) {
         // handle error
@@ -149,31 +150,34 @@ class day extends Component {
   };
 
   dataLoad = (res) => {
-    //logic for validation
-    console.log(this.state.today);
+    //logic for validati
+    console.log(res);
     if (this.state.today=="today"){
-      Values = res.today;
+      Val = res.today;
+      
     }else{
-      Values = res.tomorow;
+      Val = res.tomorow;
     }
-    if(Values==null){
+    console.log("Val");
+    console.log(Val);
+    if(Val==null){
       this.setState({ Values:null });
     }else{
       this.setState({ Values:0 });
     }
     
-    console.log(res.tomorow);
+    //console.log(res.tomorow);
     dataSource = [];
     //console.log(this.state.today);
     //Changhe the date with regex
-    for (var x = 0; x < Values.length; x++){
+    for (var x = 0; x < Val.length; x++){
         // console.log("here")
-        // console.log(Values[x][y])
-      Values[x].Start = (Values[x].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]);
-      //console.log(x, "=Done=>", Values[x].Start);
-      Values[x].End = (Values[x].End.match(/[0-2][0-9][:][0-5][0-9]/i)[0]);
+        // console.log(Val[x][y])
+      Val[x].Start = (Val[x].Start.match(/[0-2][0-9][:][0-5][0-9]/i)[0]);
+      //console.log(x, "=Done=>", Val[x].Start);
+      Val[x].End = (Val[x].End.match(/[0-2][0-9][:][0-5][0-9]/i)[0]);
 
-      dataSource.push(Values[x])
+      dataSource.push(Val[x])
 
       }
     //console.log(dataSource);

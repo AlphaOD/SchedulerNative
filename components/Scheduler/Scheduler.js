@@ -12,6 +12,7 @@
       Switch,
       TouchableHighlight,
       RefreshControl,
+      NetInfo,
     } from 'react-native';
   import Day from "./Day/Day.js";
   //import ModalPicker from 'react-native-modal-picker'
@@ -28,6 +29,7 @@
       this.setState({ day: dayValue });
       //sets the day component in state
     };
+    
      handleMenuClick = (i, v) => {
      // changes day component depending on selected value
         var tValue = (

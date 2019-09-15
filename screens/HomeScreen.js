@@ -41,7 +41,7 @@ export default class HomeScreen extends React.Component {
           </View> */}
 
           <View style={styles.getStartedContainer} >
-            {this._maybeRenderDevelopmentModeWarning()}
+        {/*{this._maybeRenderDevelopmentModeWarning()}*/}
 
             {/*<Text style={styles.getStartedText}>Get started by opening</Text>
 
@@ -52,6 +52,7 @@ export default class HomeScreen extends React.Component {
               style={{
                 flex: 1,
                 alignSelf: 'center',
+                marginVertical: 10,
                 height: 60,
                 width: 60,
                 borderWidth: 0,
